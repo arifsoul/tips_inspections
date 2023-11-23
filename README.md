@@ -2,23 +2,35 @@
 
 This Python program, created by Ahmad Arif Sultoni, is designed for image processing tasks. The main objective is to analyze images, detect objects, and apply color-coded annotations based on certain criteria. The program utilizes the OpenCV library for image processing and manipulation.
 
-# Running Using Executable
+# Usage
 
-
-# Running Using Python Code
-
-## Installation
-
-1. Clone the repository to your local machine:
+Clone the repository to your local machine:
 
    ```bash
    git clone https://github.com/arifsoul/tips_inspections.git
    ```
 
+## Running Using Executable
+
+### Configuration
+
+Before running the program, you need to configure the parameters in the `_internal/config.py` file. This file includes essential settings for image processing, such as rules, transparency, epsilon value, kernel sizes, folder paths, file extensions, and threshold values.
+
+### Running Executable Code
+
+Run the main script:
+
+   ```bash
+   inspections.exe
+   ```
+## Running Using Python Code
+
+### Installation
+
 2. Navigate to the project directory:
 
    ```bash
-   cd repository
+   cd tips_inspections/python_code
    ```
 
 3. Install the required dependencies:
@@ -27,12 +39,11 @@ This Python program, created by Ahmad Arif Sultoni, is designed for image proces
    pip install -r requirements.txt
    ```
 
-## Configuration
+### Configuration
 
 Before running the program, you need to configure the parameters in the `config.py` file. This file includes essential settings for image processing, such as rules, transparency, epsilon value, kernel sizes, folder paths, file extensions, and threshold values.
 
-## Usage
-
+### Running Python Code
 To use the program, follow these steps:
 
 1. Ensure that your input images are located in the specified `input_folder_path`.
@@ -40,6 +51,7 @@ To use the program, follow these steps:
 2. Run the main script:
 
    ```bash
+   cd python_code
    inspections.py
    ```
 
