@@ -12,11 +12,23 @@ Clone the repository to your local machine:
 
 ## Configuration
 
-Before running the program, you need to configure the parameters in the [here](config.cfg) file. This file includes essential settings for image processing, such as rules, transparency, epsilon value, kernel sizes, folder paths, file extensions, and threshold values.
+Before running the program, you need to configure the parameters in the [config.cfg](config.cfg) file. This file includes essential settings for image processing, such as rules, transparency, epsilon value, kernel sizes, folder paths, file extensions, and threshold values.
 
 ## Running Using Executable
 
-Run the main script:
+1. Ensure that your input images are located in the specified [input_folder_path](test%20set).
+
+```
+input_folder_path/
+|-- image1.jpg
+|-- image2.jpg
+|-- image3.jpg
+|-- image4.jpg
+|-- image5.jpg
+|-- image6.jpg
+```
+
+2. Run the main script:
 
    ```bash
    inspections.exe
@@ -24,7 +36,7 @@ Run the main script:
 
 ## Results
 
-The output images are color-coded based on the detected features, such as the number of angles and the percentage of a circular object in the image. The color codes represent different categories, as defined in the [here](config.cfg) file.
+The output images are color-coded based on the detected features, such as the number of angles and the percentage of a circular object in the image. The color codes represent different categories, as defined in the [config.cfg](config.cfg) file.
 
 The program also provides textual information on the detected angles and circle percentage, displayed on the processed images.
 
@@ -67,7 +79,17 @@ output_folder_path/
 
 To use the program, follow these steps:
 
-1. Ensure that your input images are located in the specified [test set](input_folder_path).
+1. Ensure that your input images are located in the specified [input_folder_path](test%20set).
+
+```
+input_folder_path/
+|-- image1.jpg
+|-- image2.jpg
+|-- image3.jpg
+|-- image4.jpg
+|-- image5.jpg
+|-- image6.jpg
+```
 
 2. Run the main script:
 
@@ -79,7 +101,7 @@ To use the program, follow these steps:
 
 ## Results
 
-The output images are color-coded based on the detected features, such as the number of angles and the percentage of a circular object in the image. The color codes represent different categories, as defined in the [here](config.cfg) file.
+The output images are color-coded based on the detected features, such as the number of angles and the percentage of a circular object in the image. The color codes represent different categories, as defined in the [config.cfg](config.cfg) file.
 
 The program also provides textual information on the detected angles and circle percentage, displayed on the processed images.
 
