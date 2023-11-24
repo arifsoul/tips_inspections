@@ -34,37 +34,6 @@ Before running the program, you need to configure the parameters in the [config.
    inspections.exe
    ```
 
-## Results
-
-The output images are color-coded based on the detected features, such as the number of angles and the percentage of a circular object in the image. The color codes represent different categories, as defined in the [config.cfg](config.cfg) file.
-
-The program also provides textual information on the detected angles and circle percentage, displayed on the processed images.
-
-### Output Structure
-
-Here is an example of the program's output structure:
-```
-output_folder_path/
-|-- GO/
-|   |-- GO_image1.jpg
-|   |-- GO_image2.jpg
-|-- GO_arguably/
-|   |-- GO_arguably_image3.jpg
-|   |-- GO_arguably_image4.jpg
-|-- NG/
-|   |-- NG_image5.jpg
-|   |-- NG_image6.jpg
-```
-### Example Output
-
-1. GO_965.png (Good)
-![GO Image](example_output/GO.png)
-
-2. GO_arguably_5859.png (Arguably Good)
-![Arguably Good Image) Image](example_output/arguably_good.png)
-
-3. NG_4967.png (Not Good)
-![NG Image](example_output/NG.png)
 
 ## Running Using Python Code
 
@@ -114,10 +83,9 @@ The output images are color-coded based on the detected features, such as the nu
 
 The program also provides textual information on the detected angles and circle percentage, displayed on the processed images.
 
-## Example
+### Output Structure
 
 Here is an example of the program's output structure:
-
 ```
 output_folder_path/
 |-- GO/
@@ -132,6 +100,22 @@ output_folder_path/
 ```
 
 In this example, images are categorized into different folders based on the defined rules.
+
+### Example Output
+
+1. GO_965.png (Good)
+   
+![GO Image](example_output/GO.png)
+
+2. GO_arguably_5859.png (Arguably Good)
+   
+![Arguably Good Image) Image](example_output/arguably_good.png)
+
+3. NG_4967.png (Not Good)
+   
+![NG Image](example_output/NG.png)
+
+
 
 ## License
 
