@@ -40,10 +40,9 @@ The output images are color-coded based on the detected features, such as the nu
 
 The program also provides textual information on the detected angles and circle percentage, displayed on the processed images.
 
-## Example
+### Output Structure
 
 Here is an example of the program's output structure:
-
 ```
 output_folder_path/
 |-- GO/
@@ -56,9 +55,15 @@ output_folder_path/
 |   |-- NG_image5.jpg
 |   |-- NG_image6.jpg
 ```
+### Example Output
 
+1. GO_965.png (Good)
 ![GO Image](example_output/GO.png)
+
+2. GO_arguably_5859.png (Arguably Good)
 ![Arguably Good Image) Image](example_output/arguably_good.png)
+
+3. NG_4967.png (Not Good)
 ![NG Image](example_output/NG.png)
 
 ## Running Using Python Code
