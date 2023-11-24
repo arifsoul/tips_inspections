@@ -113,10 +113,16 @@ def process_images(input_folder, output_folder):
                 'Light': [light_mask, contours_light_mask],
                 }
             
-            center = 0
-            radius = 0
+            center_dark = 0
+            radius_dark = 0
             num_dark_angles = 0
-            percentage_circle = 0
+            percentage_circle_dark = 0
+            category = 'not defined'
+            
+            transparant_mask_light = np.zeros_like(original_image)
+            transparant_mask_dark = np.zeros_like(original_image)
+
+            ypos = 50
             
             for mask in masks:
                     
@@ -129,14 +135,81 @@ def process_images(input_folder, output_folder):
                 
                     # Count the number of angles in the contour of masks[mask][0]
                     num_angles = count_angles(approximated_contour_mask)
+                
                 else:
                     num_angles = 0
 
-                ypos = 50
                 score = num_angles
                 
+            
+                if mask == 'Dark':
+                    # Create an empty mask with the same size as the original mask
+                    circle_mask = np.zeros_like(masks[mask][0])
+                    
+                    # Draw the circle on the empty mask
+                    cv2.drawContours(circle_mask, [largest_contour_mask], 0, (255), thickness=cv2.FILLED)
+
+                    # Calculate the area of the circle
+                    circle_area_dark = np.sum(circle_mask == 255)
+
+                    # Calculate the radius of the circle based on the area of circle_mask
+                    radius_dark = int(np.sqrt(circle_area_dark / np.pi))
+
+                    # Find the center coordinates of the bounding box
+                    center_dark = (x + w // 2, y + h // 2)
+    
+                    # Calculate the total area of the original mask
+                    total_area = np.sum(masks[mask][0] == 255)
+
+                    # Calculate the percentage of the circle
+                    percentage_circle_dark = (circle_area_dark / total_area) * 100
+                    
+                    if percentage_circle_dark > 100:
+                        percentage_circle_dark = int(percentage_circle_dark - 100)
+                        
+                    else:
+                        percentage_circle_dark = int(percentage_circle_dark)
+                        
+                # Rescale intensity of masks[mask][0] to enhance contrast
+                contrast = exposure.rescale_intensity(masks[mask][0], in_range=(100, 200), out_range=(0, 255)).clip(0, 255).astype(np.uint8)
+
+                # Apply smoothing (blurring) operation on the contour area inside the bounding box
+                masker = cv2.GaussianBlur(contrast, (kernel_smooth, kernel_smooth), 0)
+
+                # Draw the number of angles on the original image
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                    
+                cv2.putText(original_image, f'{mask} Angles     : {num_angles}', (10, ypos), font, 1, font_color, 2, cv2.LINE_AA)
+                ypos += 50
+                
+                # Default color for dark objects is blue
+                color = [255, 0, 0]
+                filename = f'{image_file}'
+                
+                # Update color and filename based on the number of angles
+                if percentage_circle_dark == key_1:
+                    dir = rules[key_1]
+                    name = f'{dir}_{image_file}'
+                    filename = os.path.join(dir, name)
+                    color = [0, 255, 0] #green
+                    category = 'GO'
+                    
+                if key_2 <= percentage_circle_dark < key_1:
+                    dir = rules[key_2]
+                    name = f'{dir}_{image_file}'
+                    filename = os.path.join(dir, name)
+                    color = [0, 255, 255] #yellow
+                    category = 'Arguably Good'
+                    
+                if percentage_circle_dark <= key_3 or score == 0 :
+                    dir = rules[key_3]
+                    name = f'{dir}_{image_file}'
+                    filename = os.path.join(dir, name)
+                    color = [0, 0, 255] #red
+                    category = 'NG'
                 
                 if mask == 'Light':
+                    
                     x = x_light
                     y = y_light
                     w = w_light
@@ -149,90 +222,42 @@ def process_images(input_folder, output_folder):
                     else:
                         score = 0
                 
-                else:
-                    # Create an empty mask with the same size as the original mask
-                    circle_mask = np.zeros_like(masks[mask][0])
-
-                    # Draw the circle on the empty mask
-                    cv2.drawContours(circle_mask, [largest_contour_mask], 0, (255), thickness=cv2.FILLED)
-
-                    # Calculate the area of the circle
-                    circle_area = np.sum(circle_mask == 255)
-
-                    # Calculate the radius of the circle based on the area of circle_mask
-                    radius = int(np.sqrt(circle_area / np.pi))
-
-                    # Find the center coordinates of the bounding box
-                    center = (x + w // 2, y + h // 2)
-    
-                    # Calculate the total area of the original mask
-                    total_area = np.sum(masks[mask][0] == 255)
-
-                    # Calculate the percentage of the circle
-                    percentage_circle = (circle_area / total_area) * 100
-                    if percentage_circle > 100:
-                        percentage_circle = int(percentage_circle - 100)
-                    else:
-                        percentage_circle = int(percentage_circle)
-                        
-                # Rescale intensity of masks[mask][0] to enhance contrast
-                contrast = exposure.rescale_intensity(masks[mask][0], in_range=(100, 200), out_range=(0, 255)).clip(0, 255).astype(np.uint8)
-
-                # Apply smoothing (blurring) operation on the contour area inside the bounding box
-                masker = cv2.GaussianBlur(contrast, (kernel_smooth, kernel_smooth), 0)
-
-                # Draw the number of angles on the original image
-                font = cv2.FONT_HERSHEY_SIMPLEX
-                    
-                cv2.putText(original_image, f'{mask} Angles: {num_angles}', (10, ypos), font, 1, font_color, 2, cv2.LINE_AA)
-                
-                # Default color for dark objects is blue
-                color = [255, 0, 0]
-                filename = f'{image_file}'
-                
-                # Update color and filename based on the number of angles
-                if percentage_circle == key_1:
-                    dir = rules[key_1]
-                    name = f'{dir}_{image_file}'
-                    filename = os.path.join(dir, name)
-                    color = [0, 255, 0] #green
-                    
-                if key_2 <= percentage_circle < key_1:
-                    dir = rules[key_2]
-                    name = f'{dir}_{image_file}'
-                    filename = os.path.join(dir, name)
-                    color = [0, 255, 255] #yellow
-                    
-                if percentage_circle <= key_3 or score == 0 :
-                    dir = rules[key_3]
-                    name = f'{dir}_{image_file}'
-                    filename = os.path.join(dir, name)
-                    color = [0, 0, 255] #red
-                
-                
-                transparant_mask = np.zeros_like(original_image)
-                
-                if mask == 'Light':
-                    transparant_mask[y:y+h, x:x+w][masker > light_threshold] = color
-                    cv2.putText(original_image, f'Circle: {percentage_circle} %', (10, ypos+50), font, 1, font_color, 2, cv2.LINE_AA)
-                    
-                else:
-                    transparant_mask[y:y+h, x:x+w][masker < dark_threshold] = color
+                if mask == 'Dark':
+                    transparant_mask_dark[y:y+h, x:x+w][masker < dark_threshold] = color
+                    cv2.putText(original_image, f'Hole Circle       : {percentage_circle_dark} %', (10, ypos+50), font, 1, font_color, 2, cv2.LINE_AA)
                     num_dark_angles = num_angles
+                       
+                if mask == 'Light':
+                    transparant_mask_light[y:y+h, x:x+w][masker > light_threshold] = color
+                    
+                    
                 
-                # Blend the original image with the transparent mask using alpha blending
-                result = cv2.addWeighted(original_image, 1, transparant_mask, transparency, 0)
+            
+            # Combine transparant_mask_light and transparant_mask_dark using bitwise_or
+            transparant_mask_combined = cv2.bitwise_or(transparant_mask_light, transparant_mask_dark)
+            
+            # Blend the original image with the combined transparent mask using alpha blending
+            result = cv2.addWeighted(original_image, 1, transparant_mask_combined, transparency, 0)
 
-                # Draw bounding box on the original image
-                cv2.rectangle(result, (x, y), (x + w, y + h), (255, 255, 0), 2)
-                
-                # Draw the circle on the result image
-                cv2.circle(result, center, radius, (255, 0, 255), 2)
+            cv2.putText(result, f'Category          : {category}', (10, ypos+150), font, 1, tuple(color), 2, cv2.LINE_AA)
+            
+            # Draw bounding box on the original image
+            cv2.rectangle(result, (x, y), (x + w, y + h), (255, 255, 0), 2)
+            
+            # Draw rectangle based on center and radius
+            cv2.rectangle(result, (center_dark[0] - radius_dark, center_dark[1] - radius_dark), (center_dark[0] + radius_dark, center_dark[1] + radius_dark), (255, 0, 255), 2)
 
             # Save the resulting image to the output folder
             output_path = os.path.join(output_folder, filename)
             print(f'output : {output_path}')
             cv2.imwrite(output_path, result)
+            
+        else:
+            print(f'File {image_file} Corrupt!!!')
+            filename = f'Corrupt_{image_file}'
+            output_path = os.path.join(output_folder, filename)
+            cv2.imwrite(output_path, original_image)
+            
 
 if __name__ == "__main__":
     (
