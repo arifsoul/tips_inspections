@@ -1,6 +1,6 @@
 # Introduction
 
-This Python program, created by Ahmad Arif Sultoni, is designed for image processing tasks. The main objective is to analyze images, detect objects, and apply color-coded annotations based on certain criteria. The program utilizes the OpenCV library for image processing and manipulation.
+This Python program, created by Ahmad Arif Sultoni, is designed for tip inspections with image processing tasks. The main objective is to analyze images, detect objects, and apply color-coded annotations based on certain criteria (GO, Arguably Good, NG). The program utilizes the OpenCV library for image processing and manipulation.
 
 # Usage
 
@@ -18,15 +18,15 @@ Before running the program, you need to configure the parameters in the [config.
 
 1. Ensure that your input images are located in the specified [input_folder_path](test%20set).
 
-```
-input_folder_path/
-|-- image1.jpg
-|-- image2.jpg
-|-- image3.jpg
-|-- image4.jpg
-|-- image5.jpg
-|-- image6.jpg
-```
+   ```
+   input_folder_path/
+   |-- image1.jpg
+   |-- image2.jpg
+   |-- image3.jpg
+   |-- image4.jpg
+   |-- image5.jpg
+   |-- image6.jpg
+   ```
 
 2. Run the main script:
 
@@ -57,6 +57,10 @@ output_folder_path/
 |   |-- NG_image6.jpg
 ```
 
+![GO Image](example_output/GO.png)
+![Arguably Good Image) Image](example_output/arguably_good.png)
+![NG Image](example_output/NG.png)
+
 ## Running Using Python Code
 
 ### Installation
@@ -81,15 +85,15 @@ To use the program, follow these steps:
 
 1. Ensure that your input images are located in the specified [input_folder_path](test%20set).
 
-```
-input_folder_path/
-|-- image1.jpg
-|-- image2.jpg
-|-- image3.jpg
-|-- image4.jpg
-|-- image5.jpg
-|-- image6.jpg
-```
+   ```
+   input_folder_path/
+   |-- image1.jpg
+   |-- image2.jpg
+   |-- image3.jpg
+   |-- image4.jpg
+   |-- image5.jpg
+   |-- image6.jpg
+   ```
 
 2. Run the main script:
 
